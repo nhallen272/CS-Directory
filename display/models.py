@@ -18,8 +18,8 @@ class FacultyModel(models.Model):
     pic = models.URLField(default="https://odu.edu/content/dam/odu/faculty-staff/person-placeholder-2015.png/_jcr_content/renditions/cq5dam.thumbnail.319.319.png")
     
     heading = models.CharField(max_length=120, default=' ', null=True) # status
-    website = models.URLField(null=True)                             # link to their .cs.odu.edu website
-    research = models.ManyToManyField('ResearchCategory')   # research types
+    website = models.URLField(null=True)                               # link to their .cs.odu.edu website
+    research = models.ManyToManyField('ResearchCategory')              # research types
     bio = models.TextField(default=' ', null=True)                     # personal biography, research, etc.
     edited = models.BooleanField(default=False, null=True)             # whether it has been edited by the faculty
 

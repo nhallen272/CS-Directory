@@ -1,10 +1,14 @@
 #Scrape 
 # Directory URL = https://odu.edu/compsci/directory
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "FacultyDisplay.settings")
+import django
+django.setup()
 
-from tkinter import N
+#from django.core.management import call_command
 import requests
 from bs4 import BeautifulSoup
-from models import FacultyModel
+from display.models import FacultyModel
 
 class Faculty:
     def __init__(self, name, title, picURL, address, phone, email):
@@ -18,11 +22,15 @@ class Faculty:
     def print(self):
         print("Name {}".format(self.name))
         print("Title {}".format(self.title))
-        print("Pic URL {}".format(self.pic))
+        print("Image URL {}".format(self.pic))
         print("Address {}".format(self.address))
         print("Phone {}".format(self.phone))
         print("Email {}".format(self.email))
         print(" ")
+
+    def __eq__(self, other):
+        return self.name == other.name
+
 
 
 
@@ -62,8 +70,13 @@ def main():
         f = Faculty(name, title, pic, addr, phone, email)
         FacList.append(f)
 
+
     for fac in FacList:
         fac.print()
+        # check if already in DB
+        facAdd = FacultyModel(name=fac.name, )
+        if ( )
+
 
     
   
