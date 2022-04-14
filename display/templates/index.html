@@ -12,14 +12,13 @@
                         <a href=""><img class="card-img-top" src="{{ fac.pic }}"></a>
                         <div class="card-body">
                             <h5 class="card-title">{{ fac.name }}</h5>
-                            {% for category in fac.research.all %}
-                                <a href="http://127.0.0.1:8000/" class="badge badge-info">{{ category.title }}</a>
-                            {% endfor %}
+                            
                             <h6 class="card-subtitle mb-2 text-muted">{{ fac.heading|truncatechars:80 }}</h6>
                             <p class="card-text">{{ fac.bio|truncatechars:80 }}...</p>
                             <h6>Email: {{ fac.email }}</h6>
-                            <!--<a href="" class="btn btn-primary">More Info</a>-->
-
+                            <h6>Phone: {{ fac.phone }}</h6>
+                            <a href="{% url 'fac_detail' fac.pk %}" class="btn btn-primary">More Info</a>
+ 
                         </div>
                     </div>
                 </div>
