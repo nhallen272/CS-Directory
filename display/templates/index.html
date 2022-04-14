@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_content %}
+
+<section class="blog-list px-3 py-5 p-md-5">
+    <div class="container">
+        <div class="row">
+            {% for fac in faculty %}
+                <div class="col-md-4">
+                    <div class="card mb-2">
+                        <a href=""><img class="card-img-top" src="{{ fac.pic }}"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ fac.name }}</h5>
+                            {% for category in fac.research.all %}
+                                <a href="http://127.0.0.1:8000/" class="badge badge-pill badge-secondary">{{ category.title }}</a>
+                            {% endfor %}
+                            <h6 class="card-subtitle mb-2 text-muted">{{ fac.heading|truncatechars:80 }}</h6>
+                            <p class="card-text">{{ fac.bio|truncatechars:80 }}...</p>
+                            <h6>Email: {{ fac.email }}</h6>
+                            <!--<a href="" class="btn btn-primary">More Info</a>-->
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
