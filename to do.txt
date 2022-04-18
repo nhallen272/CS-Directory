@@ -1,7 +1,14 @@
 Django To-Do
 
-1. Add FacEdit Form
+1. Add FacEdit page
+  - Form:
+    * Heading
+    * Biography
+    * Title
+    * Profile Image upload
+
   - Add LDAP login
 
-2. Add MEDIA_ROOT/URL
-3. Generate QR code from the 
+2. Add Image to FacultyModel
+3.  Add MEDIA_ROOT/URL
+3. Add QR code generation to scraper.py
