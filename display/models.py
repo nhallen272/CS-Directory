@@ -17,6 +17,7 @@ class FacultyModel(models.Model):
     phone = models.CharField(max_length=15, default=' ')                 # phone #
     pic = models.URLField(default="https://odu.edu/content/dam/odu/faculty-staff/person-placeholder-2015.png/_jcr_content/renditions/cq5dam.thumbnail.319.319.png")
     
+
     heading = models.CharField(max_length=120, default=' ', null=True) # status
     website = models.URLField(null=True)                               # link to their .cs.odu.edu website
     research = models.ManyToManyField('ResearchCategory')              # research types

@@ -1,0 +1,5 @@
+Django To-Do
+
+- Add LDAP login
+- Make FacultyEdit form
+- 

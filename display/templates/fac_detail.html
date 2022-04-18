@@ -1,35 +1,19 @@
-
-{% extends "base.html" %}
-{% load static %}
-
-{% block page_content %}
-<!-- Bootstrap Modal-->
-<div class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ faculty.name }}</h5>
-          {% for category in fac.research.all %}
-              <h6>Research: <span class="badge badge-info">{{ category.title }}</span></h6>
-          {% endfor %}
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <img src="{{ faculty.pic }}" class="img-fluid"/> 
         </div>
-        <div class="modal-body">
-          <p>{{ faculty.bio }}</p>
-          <br>
-          <p>{{ faculty.address }}</p>
-        </div>
-        <div class="modal-footer">
-          <a href="{% url 'fac_edit' faculty.pk %}" class="btn btn-primary">Edit</a>
-          <!--<button type="button" class="btn btn-primary">Save changes</button> -->
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
-  
-
-
-{% endblock %}
+<br>
+<h6>{{ faculty.title }}</h6>
+<h6>Research Types:</h6>
+{% for cat in faculty.research.all %}
+    <a href="#" class="badge badge-pill badge-secondary">{{ cat.title }}</a>
+{% endfor %}
+<h5>About Me</h5>  
+<p>{{ faculty.bio }}</p>
+<h5>Contact</h5> 
+<h6>Email: {{ faculty.email }}</h6>
+<h6>Phone: {{ faculty.phone }}</h6>
+<h6>Website: {{ faculty.website }}</h6>
+</div>

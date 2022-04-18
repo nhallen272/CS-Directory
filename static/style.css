@@ -1,10 +1,10 @@
 
   body {
+	background:url("./dragas.png");
   	background:#F5F5F5;
   }
   
   .head {
-  	background:url('../include/dragas.png');
   	background-color: #00337b;
   	background-repeat:no-repeat;
   	background-size: 100% 1100px;

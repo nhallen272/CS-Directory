@@ -5,20 +5,29 @@
 
 <section class="blog-list px-3 py-5 p-md-5">
     <div class="container">
-        <div class="row">
+        <div class="row" id="faculty-row">
             {% for fac in faculty %}
                 <div class="col-md-4">
                     <div class="card mb-2">
-                        <a href=""><img class="card-img-top" src="{{ fac.pic }}"></a>
+                        <a class="open-faculty" 
+                           href="{% url 'fac_detail' fac_pk=fac.pk %}"
+                           data-popup-url="{% url 'fac_detail' fac_pk=fac.pk %}"
+                           ><img class="card-img-top" src="{{ fac.pic }}"></a>
                         <div class="card-body">
                             <h5 class="card-title">{{ fac.name }}</h5>
-                            
                             <h6 class="card-subtitle mb-2 text-muted">{{ fac.heading|truncatechars:80 }}</h6>
                             <p class="card-text">{{ fac.bio|truncatechars:80 }}...</p>
                             <h6>Email: {{ fac.email }}</h6>
                             <h6>Phone: {{ fac.phone }}</h6>
-                            <a href="{% url 'fac_detail' fac.pk %}" class="btn btn-primary">More Info</a>
- 
+                            <!-- Button trigger modal -->
+                            <a class="open-faculty" href="{% url 'fac_detail' fac_pk=fac.pk %}" 
+                            data-popup-url="{% url 'fac_detail' fac_pk=fac.pk %}">
+                            <button type="button" class="btn btn-primary">More Info</button>
+                            </a>
+
+                            <!-- fac_detail Modal -->
+                             
+                                
                         </div>
                     </div>
                 </div>
@@ -27,4 +36,16 @@
     </div>
 </section>
 
+<script>
+    $(document).on("click", ".open-faculty", function (e) {
+      e.preventDefault();
+      var $popup = $("#popup");
+      var popup_url = $(this).data("popup-url");
+      $(".modal-body", $popup).load(popup_url, function () {
+        $popup.modal("show");
+      });
+    });
+  </script>
+
+{% include "fac_modal.html" %}
 {% endblock %}

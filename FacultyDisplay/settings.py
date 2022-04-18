@@ -28,6 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TEMPLATE_DIRS = (
+    join(BASE_DIR,'templates/'),
+    join(BASE_DIR,'display/templates/'),
+)
 
 # Application definition
 
@@ -39,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap_modal_forms',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +61,9 @@ ROOT_URLCONF = 'FacultyDisplay.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["FacultyDisplay/templates/", "display/templates/"],
+        'DIRS': [ 'FacultyDisplay/templates',
+                  'display/templates',
+        ], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,7 +129,7 @@ STATIC_ROOT = join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     join(BASE_DIR, "static"),
-    join(BASE_DIR, "display/static"),
+    #join(BASE_DIR, "display/static"),
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
