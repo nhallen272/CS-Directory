@@ -1,12 +1,12 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
-            <img src="{{ faculty.pic }}" class="img-fluid"/> 
+        <div class="col-md-4">
+            <img src="{{ faculty.pic }}" class="card-img-top" /> 
         </div>
     </div>
 <br>
 <h6>{{ faculty.title }}</h6>
-<h6>Research Types:</h6>
+<h5>Research Types:</h5>
 {% for cat in faculty.research.all %}
     <a href="#" class="badge badge-pill badge-secondary">{{ cat.title }}</a>
 {% endfor %}

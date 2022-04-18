@@ -1,5 +1,7 @@
 Django To-Do
 
-- Add LDAP login
-- Make FacultyEdit form
-- 
+1. Add FacEdit Form
+  - Add LDAP login
+
+2. Add MEDIA_ROOT/URL
+3. Generate QR code from the 
