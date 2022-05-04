@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
-{% block page_title%}ODU Computer Science Department Directory{% endblock %}
+
+{% block page_title%}Research Category: '{{ r_cat }}'{% endblock %}
 {% block page_content %}
+
+
 
 <section class="blog-list px-3 py-5 p-md-5">
     <div class="container">
@@ -13,14 +16,18 @@
                            href="{% url 'fac_detail' fac_pk=fac.pk %}"
                            data-popup-url="{% url 'fac_detail' fac_pk=fac.pk %}"
                            ><img class="card-img-top" src="{{ fac.pic }}"></a>
-                        <div class="card-body">
+                            <div class="card-body">
                             <h5 class="card-title">{{ fac.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ fac.heading|truncatechars:80 }}</h6>
                             <h5>Research: 
-                                {% for r_cat in fac.researchTypes.all %}
-                                    <a href="{% url 'research_category' r_cat.title %}" class="badge bg-primary">{{ r_cat.title }}</a>
+                                {% for cat in fac.researchTypes.all %}
+                                {% if cat.title == r_cat %} 
+                                    <a href="{% url 'research_category' cat.title %}" class="badge bg-primary">{{ cat.title }}</a> <!--badge bg-primary-->
+                                {% else %}
+                                    <a href="{% url 'research_category' cat.title %}" class="badge bg-secondary">{{ cat.title }}</a>
+                                {% endif %}
                                 {% endfor %}
                             </h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ fac.heading|truncatechars:80 }}</h6>
                             <p class="card-text">{{ fac.bio|truncatechars:80 }}</p>
                             <h6>Email: {{ fac.email }}</h6>
                             <h6>Phone: {{ fac.phone }}</h6>
@@ -29,10 +36,8 @@
                             data-popup-url="{% url 'fac_detail' fac_pk=fac.pk %}">
                             <button type="button" class="btn btn-primary">More Info</button>
                             </a>
-
                             <!-- fac_detail Modal -->
-                             
-                                
+  
                         </div>
                     </div>
                 </div>

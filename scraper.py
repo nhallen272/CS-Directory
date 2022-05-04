@@ -79,12 +79,6 @@ def main():
         FacList.append(f)
 
 
-#    heading = models.CharField(max_length=120, default=' ', null=True) # status
-#    website = models.URLField(null=True)                               # link to their .cs.odu.edu website
-#    research = models.ManyToManyField('ResearchCategory')              # research types
-#    bio = models.TextField(default=' ', null=True)                     # personal biography, research, etc.
-#    edited = models.BooleanField(default=False, null=True)
-
     # websites https://www.cs.odu.edu/~tkennedy
     for fac in FacList:
         fac.print()
@@ -93,7 +87,7 @@ def main():
         if FacultyModel.objects.filter(name=fac.name).exists():
             print("Already Exists")
         else:
-            facAdd = FacultyModel(title=fac.title, email=fac.email, phone=fac.phone, pic=fac.pic, name=fac.name, website=fac.website)
+            facAdd = FacultyModel(title=fac.title, email=fac.email, phone=fac.phone, pic=fac.pic, name=fac.name, website=fac.website, address=fac.address)
             facAdd.save()
             
 

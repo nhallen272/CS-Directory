@@ -1,6 +1,7 @@
 Django To-Do
 
-1. Add FacEdit page
+1. Work on fac_edit page
+  - UI for forms
   - Form:
     * Heading
     * Biography
@@ -9,6 +10,11 @@ Django To-Do
 
   - Add LDAP login
 
-2. Add Image to FacultyModel
-3.  Add MEDIA_ROOT/URL
-3. Add QR code generation to scraper.py
+2. Add "Research Categories": 
+
+3. Add Image to FacultyModel
+
+4. Add QR code generation to scraper.py
+
+5. Add Auto redirect 'index' url
+

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from os.path import join
+import ldap
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,8 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap_modal_forms',
+    'crispy_forms',
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -108,6 +111,33 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# LDAP
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+        "DC=cs,DC=odu,DC=edu", 
+        ldap.SCOPE_SUBTREE, 
+        "(&(objectClass=user)(sAMAccountName=%(user)s))"
+)
+
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+    'ou=groups,dc=cs,dc=odu,dc=edu',
+    ldap.SCOPE_SUBTREE,
+    '(objectClass=groupOfNames)',
+)
+
+AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr='cn')
+
+AUTH_LDAP_REQUIRE_GROUP = "cn=faculty,ou=groups,dc=cs,dc=odu,dc=edu"
+
+AUTH_LDAP_CONNECTION_OPTIONS = {
+        ldap.OPT_DEBUG_LEVEL: 0,
+        ldap.OPT_REFERRALS: 0,
+}
+AUTH_LDAP_USER_ATTR_MAP = {
+    'first_name': 'givenName',
+    'last_name': 'sn',
+    'email': 'mail',
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -127,8 +157,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = join(BASE_DIR, 'staticfiles')
 
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = [
     join(BASE_DIR, "static"),

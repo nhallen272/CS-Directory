@@ -6,14 +6,19 @@
     </div>
 <br>
 <h6>{{ faculty.title }}</h6>
-<h5>Research Types:</h5>
-{% for cat in faculty.research.all %}
-    <a href="#" class="badge badge-pill badge-secondary">{{ cat.title }}</a>
+<h5>Research:
+{% for r_cat in faculty.researchTypes.all %}
+    <a href="{% url 'research_category' r_cat.title %}" class="badge bg-primary">{{ r_cat.title }}</a> 
 {% endfor %}
+</h5>
 <h5>About Me</h5>  
 <p>{{ faculty.bio }}</p>
 <h5>Contact</h5> 
 <h6>Email: {{ faculty.email }}</h6>
 <h6>Phone: {{ faculty.phone }}</h6>
 <h6>Website: {{ faculty.website }}</h6>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <a href="{% url 'fac_edit' fac_pk=faculty.pk %}"><button type="button" class="btn btn-primary">Edit</button></a>
 </div>
