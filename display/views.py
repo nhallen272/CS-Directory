@@ -1,10 +1,16 @@
-from django.shortcuts import render
+import email
+from urllib.request import Request
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from .models import FacultyModel
 from django.http import HttpResponseRedirect
 from .forms import FacEditForm
 
 
-# Create your views here
+def login(request):
+    return render(request, 'login/login.html')
+
 
 def index(request):
     faculty = FacultyModel.objects.all()
@@ -22,43 +28,40 @@ def fac_detail(request, fac_pk):
     faculty = FacultyModel.objects.get(pk=fac_pk)
     return render(request, "fac_detail.html", {'faculty':faculty, 'fac_pk':fac_pk})
 
-# login through ldap
-def fac_login(request):
-    return render(request, "fac_login.html")
 
 
+def fac_edit(request):
+# ***** require LDAP authentication
+    if request.user.is_authenticated:
+        user = request.user
+        fac = FacultyModel.objects.filter(email=user.email)
 
-def fac_edit(request, fac_pk):
-    # ***** require LDAP authentication for logging in. 
+        if request.method == 'POST':
+            form = FacEditForm(request.POST)
+            if form.is_valid():
+                # process the data in form.cleaned_data as required
+                fac.name = form.cleaned_data["name"]
+                fac.title = form.cleaned_data["title"]
+                fac.email = form.cleaned_data["email"]
+                fac.phone = form.cleaned_data["phone"]
+                fac.address = form.cleaned_data["address"]
+                fac.heading = form.cleaned_data["heading"]
+                fac.website = form.cleaned_data["website"]
+                # ADD processing of QR code of website
+                fac.researchTypes = form.cleaned_data["researchTypes"]
+                fac.bio = form.cleaned_data["bio"]
+                fac.customIMG = form.cleaned_data["customIMG"]
 
-    # specific faculty that we editing
-    fac = FacultyModel.objects.get(pk=fac_pk)
+                fac.edited = True
+                fac.save()
+                # redirect home
+                return HttpResponseRedirect('index')
 
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        form = FacEditForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            fac.name = form.cleaned_data["name"]
-            fac.title = form.cleaned_data["title"]
-            fac.email = form.cleaned_data["email"]
-            fac.phone = form.cleaned_data["phone"]
-            fac.address = form.cleaned_data["address"]
-            fac.heading = form.cleaned_data["heading"]
-            fac.website = form.cleaned_data["website"]
-            # **ADD processing of QR code of website
-            fac.researchTypes = form.cleaned_data["researchTypes"]
-            fac.bio = form.cleaned_data["bio"]
-            fac.customIMG = form.cleaned_data["customIMG"]
+        # if a GET (or any other method) we'll create a blank form
+        else:
+            form = FacEditForm()
+            return render(request, "fac_edit.html", {'form': form, 'faculty': fac})
 
-            fac.edited = True
-            fac.save()
-            # redirect home
-            return HttpResponseRedirect('index')
 
-    # if a GET (or any other method) we'll create a blank form
     else:
-        form = FacEditForm()
-    
-    return render(request, "fac_edit.html", {'form': form, 'faculty': fac})
+        render(request, "edit_unauthed.html", {})

@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'FacultyDisplay.middleware.login_required',
 ]
 
 ROOT_URLCONF = 'FacultyDisplay.urls'
@@ -112,6 +113,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # LDAP
+LOGIN_URL = '/accounts/login'
+AUTH_LDAP_SERVER_URI = "ldap://cs.odu.edu" 
+
+AUTH_LDAP_BIND_DN = 'CN=lobbyldap,OU=Service Accounts,DC=cs,DC=odu,DC=edu'
+AUTH_LDAP_BIND_PASSWORD = 'LtTLE4tQjCfUSUAWchS7QsNA'
+
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
         "DC=cs,DC=odu,DC=edu", 
         ldap.SCOPE_SUBTREE, 
@@ -126,18 +133,26 @@ AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
 
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr='cn')
 
-AUTH_LDAP_REQUIRE_GROUP = "cn=faculty,ou=groups,dc=cs,dc=odu,dc=edu"
+#AUTH_LDAP_REQUIRE_GROUP = "cn=faculty,ou=groups,dc=cs,dc=odu,dc=edu"  #"cn=faculty,ou=groups,dc=cs,dc=odu,dc=edu"
 
 AUTH_LDAP_CONNECTION_OPTIONS = {
         ldap.OPT_DEBUG_LEVEL: 0,
         ldap.OPT_REFERRALS: 0,
 }
+
 AUTH_LDAP_USER_ATTR_MAP = {
     'first_name': 'givenName',
     'last_name': 'sn',
     'email': 'mail',
 }
 
+AUTHENTICATION_BACKENDS = (
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+AUTH_LDAP_ALWAYS_UPDATE_USER = True
+LOGIN_REDIRECT_URL = '/edit'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -149,7 +164,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -165,7 +179,15 @@ STATICFILES_DIRS = [
     join(BASE_DIR, "static"),
     #join(BASE_DIR, "display/static"),
 ]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {"django_auth_ldap": {"level": "DEBUG", "handlers": ["console"]}},
+}
