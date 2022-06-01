@@ -34,17 +34,17 @@ def welcome(request, text=""):
     if request.user.is_authenticated:
         user = request.user
         if FacultyModel.objects.filter(email=user.email).exists():
-            fac = FacultyModel.objects.filter(email=user.email)
-            logger.info("Found Existing FacultModel: {}".format(fac.name))
+            fac = FacultyModel.objects.get(email=user.email)
+            logger.info("Found Existing FacultyModel")
         
         else:
             # create new  facultymodel if it doesn't exist
             facname = user.first_name + " " + user.last_name
-            fac = FacultyModel(email=user.email, name=facname)
+            fac = FacultyModel.objects.create(email=user.email, name=facname)
             fac.save()
             logger.info("Created new FacultyModel")
     
-        logger.info("Login Success: {} ".format(user.email))
+        logger.info("Login Success")
         return render(request, "welcome.html", {'fac':fac, 'user':request.user, 'text': text})
     
     else:
@@ -53,31 +53,51 @@ def welcome(request, text=""):
         
     
 
-def fac_edit(request, fac_pk):
+def fac_edit(request):
     logger = logging.getLogger('editing')
     if request.user.is_authenticated:
         user = request.user
-        fac = FacultyModel.objects.get(fac_pk)
-            
+        fac = FacultyModel.objects.get(email=user.email)
+        #fac = FacultyModel.objects.get(fac_pk)
+        logger.info("Editing Faculty {}".format(fac))
+        
         if request.method == 'POST':
             logger.info("Form POST")
             form = FacEditForm(request.POST, request.FILES)
             if form.is_valid():
-                fac.pic = form.cleaned_data["customIMG"]
+                pic = form.cleaned_data.get("pic")
+                if pic:
+                    fac.pic = pic
+                    fac.hasCustomPic = True
+                else:
+                    fac.pic = "images/default_profile.png"
+                    fac.hasCustomPic = True
+                logger.info("image: {}".format(fac.pic.url))
                 fac.name = form.cleaned_data["name"]
-                fac.title=form.cleaned_data["title"] 
+                logger.info("name: {}".format(fac.name))
+                fac.title = form.cleaned_data["title"]
+                logger.info("title: {}".format(fac.title)) 
                 fac.email = user.email 
+                logger.info("email: {}".format(fac.email))
                 fac.phone = form.cleaned_data["phone"]
+                logger.info("phone: {}".format(fac.phone))
                 fac.website = form.cleaned_data["website"]
-                fac.address = form.cleaned_data["address"]  
+                logger.info("website: {}".format(fac.website))
+                fac.address = form.cleaned_data["address"] 
+                logger.info("adddress: {}".format(fac.address)) 
                 fac.bio = form.cleaned_data["bio"]
-                fac.researchTypes = form.cleaned_data["researchTypes"]
+                logger.info("bio: {}".format(fac.bio))
+                research = form.cleaned_data["researchTypes"]
+                logger.info("researchTypes: {}".format(research))
+                fac.researchTypes.add(*[research])
+                #fac.researchTypes.set(research)
                 fac.edited=True
                 
                 fac.save()
-                form.save()
-            # redirect home
-            return HttpResponseRedirect('welcome', text="Successfully Edited!")
+                #form.save()
+            # redirect to welcome page
+
+            return redirect('welcome')
 
         # if a GET (or any other method) we'll create a blank form
         else:
@@ -86,7 +106,7 @@ def fac_edit(request, fac_pk):
 
 
     else:
-        render(request, "edit_unauthed.html", {})
+       return redirect('/accounts/login')
 
 
 class FacEditView(UpdateView):

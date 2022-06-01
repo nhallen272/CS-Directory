@@ -15,6 +15,7 @@ class FacultyModel(models.Model):
     email = models.CharField(max_length=60, default=' ')               # email
     phone = models.CharField(max_length=15, default=' ')               # phone 
     pic = models.ImageField(upload_to='images/', null=True, blank=True, default="images/default_profile.png") 
+    hasCustomPic = models.BooleanField(default=False, null=True)
     address = models.TextField(default=' ', null=True)
     website = models.URLField(null=True)                                # link to their .cs.odu.edu website
     researchTypes = models.ManyToManyField('ResearchCategory')          # research types
@@ -22,4 +23,4 @@ class FacultyModel(models.Model):
     edited = models.BooleanField(default=False, null=True)              # whether it has been edited by the faculty
     
     def __str__(self):
-        return self.name
+        return self.name    

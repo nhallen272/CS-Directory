@@ -12,25 +12,10 @@
     <p class="card-text">FacultyModel: {{fac.name}} {{fac.email}}</p>
 
     
-    <a class="edit-faculty" 
-        href="{% url 'edit' fac.pk%}"
-        data-popup-url="{% url 'edit' %}"
-        ><button class="btn btn-primary" role="button">Edit Your Profile</button></a>
+    <a class="edit-faculty" href="{% url 'edit' %}"><button class="btn btn-primary" role="button">Edit Your Profile</button></a>
     
     <a class="btn btn-primary" href="{% url 'logout' %}" role="button">Logout</a>
   </div>
 </div>
 
-<script>
-  $(document).on("click", ".edit-faculty", function (e) {
-    e.preventDefault();
-    var $popup = $("#popup");
-    var popup_url = $(this).data("popup-url");
-    $(".modal-body", $popup).load(popup_url, function () {
-      $popup.modal("show");
-    });
-  });
-</script>
-
-{% include "fac_edit_modal.html" %}
 {% endblock %}

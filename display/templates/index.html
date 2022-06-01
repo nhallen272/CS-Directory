@@ -12,7 +12,7 @@
                         <a class="open-faculty" 
                            href="{% url 'fac_detail' fac_pk=fac.pk %}"
                            data-popup-url="{% url 'fac_detail' fac_pk=fac.pk %}"
-                           ><img class="card-img-top" src="{{ fac.pic }}"></a>
+                           ><img class="card-img-top" src="{{ fac.pic.url }}"></a>
                         <div class="card-body">
                             <h3 class="card-title">{{ fac.name }}</h3>
                             <h5>Research: 

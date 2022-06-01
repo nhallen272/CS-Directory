@@ -1,5 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_content %}
+
+<h5>{{ text }}</h5>
+  
 {% load crispy_forms_tags %}
 
+<h5>Welcome, {{ user.first_name }} {{user.last_name}}</h5>
 <div class="card">
     <h5 class="card-header">Editing Faculty: {{ faculty.name }}</h5>
     <div class="card-body">
@@ -15,3 +23,5 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 </div>
+
+{% endblock %}

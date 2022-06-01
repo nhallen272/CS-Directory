@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from .models import *
 
-class ResearchCategoryForm(form.ModelForm):
+class ResearchCategoryForm(forms.ModelForm):
     class Meta:
         model = ResearchCategory
         fields = ['title']
@@ -19,7 +19,7 @@ class FacEditForm(forms.Form):
     website = forms.CharField(label='Website', required=False)                                          # link to their .cs.odu.edu website
     researchTypes = forms.ModelChoiceField(label='Research Categories', queryset=ResearchCategory.objects.all(), required=False)         # research types
     bio = forms.CharField(label='Bio, research, etc.', widget=forms.Textarea, required=False)                                          # personal biography, research, etc.
-    customIMG = forms.ImageField(label='Profile Pic', required=False)                                                          # custom image upload by faculty
+    pic = forms.ImageField(label='Profile Pic', required=False)                                                          # custom image upload by faculty
     
 
     def __init__(self, *args, **kwargs):
@@ -33,4 +33,4 @@ class FacultyForm(forms.ModelForm):
 
     class Meta:
         model = FacultyModel
-        fields = ['name', 'title', 'email', 'phone', 'address', 'researchTypes' 'website', 'researchTypes', 'bio', 'pic']
+        fields = ['name', 'title', 'email', 'phone', 'address', 'researchTypes', 'website', 'researchTypes', 'bio', 'pic']
