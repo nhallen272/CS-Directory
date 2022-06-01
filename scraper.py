@@ -1,6 +1,6 @@
 #Scrape 
 # Directory URL = https://odu.edu/compsci/directory
-from asyncio.windows_events import NULL
+
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "FacultyDisplay.settings")
 import django
@@ -53,39 +53,55 @@ def main():
     # list of faculty
     FacList = []
     for fac in raw_faclist1:
-        pic = fac.div.img['src']  #("div", class_="grid-2 faculty_listing no_margin_right")
+        pic = fac.div.img['src']  
         pic = "https://odu.edu" + pic
         name = fac.h3.text
-        title, addr, phone = fac.ul.find_all("div")
-        title = title.text
-        addr = addr.text
-        phone = phone.text
+        title_addr_ph = fac.ul.find_all("div")
+        # if length of title_addr_phone is 3
+        if len(title_addr_ph) == 3:
+            title = title_addr_ph[0].text
+            addr = title_addr_ph[1].text
+            phone = title_addr_ph[2].text
+        else:
+            print("Title, Address, Phone contents:  ")
+            print(title_addr_ph)   
         email = fac.ul.find_all("li")
         email = email[1].text
         f = Faculty(name, title, pic, addr, phone, email)
         FacList.append(f)
         
     for fac in raw_faclist2:
-        pic = fac.div.img['src']  #("div", class_="grid-2 faculty_listing no_margin_right")
+        pic = fac.div.img['src']  
         pic = "https://odu.edu" + pic
         name = fac.h3.text
-        title, addr, phone = fac.ul.find_all("div")
-        title = title.text
-        addr = addr.text
-        phone = phone.text
+        title_addr_ph = fac.ul.find_all("div")
+        # if length of title_addr_phone is 3
+        if len(title_addr_ph) == 3:
+            title = title_addr_ph[0].text
+            addr = title_addr_ph[1].text
+            phone = title_addr_ph[2].text
+        else:
+            print("Name: ")
+            print(name)
+            print('\n')
+            print(title_addr_ph)  
+            
         email = fac.ul.find_all("li")
         email = email[1].text
         f = Faculty(name, title, pic, addr, phone, email)
         FacList.append(f)
 
 
-    # websites https://www.cs.odu.edu/~tkennedy
+
     for fac in FacList:
         fac.print()
         
         # check if already in DB
         if FacultyModel.objects.filter(name=fac.name).exists():
-            print("Already Exists")
+            print("Already Exists \n Updating address")
+            foundFac = FacultyModel.objects.get(name=fac.name)
+            foundFac.address = fac.address
+            foundFac.save()
         else:
             facAdd = FacultyModel(title=fac.title, email=fac.email, phone=fac.phone, pic=fac.pic, name=fac.name, website=fac.website, address=fac.address)
             facAdd.save()
@@ -93,7 +109,5 @@ def main():
 
 
 
-    
-  
 if __name__ == "__main__":
     main()

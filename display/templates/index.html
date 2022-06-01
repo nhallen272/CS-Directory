@@ -14,16 +14,17 @@
                            data-popup-url="{% url 'fac_detail' fac_pk=fac.pk %}"
                            ><img class="card-img-top" src="{{ fac.pic }}"></a>
                         <div class="card-body">
-                            <h5 class="card-title">{{ fac.name }}</h5>
+                            <h3 class="card-title">{{ fac.name }}</h3>
                             <h5>Research: 
                                 {% for r_cat in fac.researchTypes.all %}
                                     <a href="{% url 'research_category' r_cat.title %}" class="badge bg-primary">{{ r_cat.title }}</a>
                                 {% endfor %}
                             </h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ fac.heading|truncatechars:80 }}</h6>
                             <p class="card-text">{{ fac.bio|truncatechars:80 }}</p>
-                            <h6>Email: {{ fac.email }}</h6>
-                            <h6>Phone: {{ fac.phone }}</h6>
+                            <h5>Contact</h5>
+                            <h6>{{ fac.address }}</h6>
+                            <h6>{{ fac.email }}</h6>
+                            <h6>{{ fac.phone }}</h6>
                             <!-- Button trigger modal -->
                             <a class="open-faculty" href="{% url 'fac_detail' fac_pk=fac.pk %}" 
                             data-popup-url="{% url 'fac_detail' fac_pk=fac.pk %}">
@@ -50,7 +51,7 @@
         $popup.modal("show");
       });
     });
-  </script>
+</script>
 
 {% include "fac_modal.html" %}
 {% endblock %}

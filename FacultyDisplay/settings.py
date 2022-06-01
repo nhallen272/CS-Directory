@@ -57,7 +57,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'FacultyDisplay.middleware.login_required',
 ]
 
 ROOT_URLCONF = 'FacultyDisplay.urls'
@@ -114,6 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # LDAP
 LOGIN_URL = '/accounts/login'
+LOGIN_EXEMPT_URLS = ['/index', '/']
 AUTH_LDAP_SERVER_URI = "ldap://cs.odu.edu" 
 
 AUTH_LDAP_BIND_DN = 'CN=lobbyldap,OU=Service Accounts,DC=cs,DC=odu,DC=edu'
@@ -152,7 +152,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 AUTH_LDAP_ALWAYS_UPDATE_USER = True
-LOGIN_REDIRECT_URL = '/edit'
+LOGIN_REDIRECT_URL = '/welcome'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -189,5 +189,5 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {"console": {"class": "logging.StreamHandler"}},
-    "loggers": {"django_auth_ldap": {"level": "DEBUG", "handlers": ["console"]}},
+    "loggers": {"django_auth_ldap": {"level": "DEBUG", "handlers": ["console"]},"editing": {"handlers": ["console"], "level": "INFO",}},
 }
